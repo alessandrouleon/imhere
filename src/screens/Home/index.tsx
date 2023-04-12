@@ -3,16 +3,16 @@ import { Text, TextInput, TouchableOpacity, View, FlatList, Alert } from 'react-
 //import { ScrollView } from 'react-native';
 import { styles } from '../Home/types';
 import { Participant } from '../../components/Participant';
-
+import { useState } from 'react';
 
 export function Home() {
-  const participantes = [
-    'Maria', 'Joao', 'Ana', 'Patricia', 'Carolina', 'Sadra', 'Mario', 'Karina', 'Edivirge', 'Arimateia', 'Felipe'
-  ] || undefined;
+  const [participantes, setParticipantes] = useState(['João']);
+
 
   const handleParticipantAdd = () => {
     if (participantes.includes('Ana'))
       return Alert.alert("Participante já existe", "Este participante ja esta cadastrado.")
+    setParticipantes(state => [...state, 'Ana']);
   }
 
   const handleParticipantRemove = (name: string) => {
