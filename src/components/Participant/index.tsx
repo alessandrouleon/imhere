@@ -2,7 +2,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./types";
 
 interface INameProps {
-  name: string;
+  name: string | undefined;
   onRemove: () => void;
 }
 export function Participant({ name, onRemove }: INameProps) {

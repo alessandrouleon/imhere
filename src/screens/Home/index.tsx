@@ -3,16 +3,22 @@ import { Text, TextInput, TouchableOpacity, View, FlatList, Alert } from 'react-
 //import { ScrollView } from 'react-native';
 import { styles } from '../Home/types';
 import { Participant } from '../../components/Participant';
-
+import { useState } from 'react';
 
 export function Home() {
-  const participantes = [
-    'Maria', 'Joao', 'Ana', 'Patricia', 'Carolina', 'Sadra', 'Mario', 'Karina', 'Edivirge', 'Arimateia', 'Felipe'
-  ] || undefined;
+  const [participants, setParticipantes] = useState<String[]>([]);
+  const [participanteName, setParticipanteName] = useState('');
+
 
   const handleParticipantAdd = () => {
-    if (participantes.includes('Ana'))
-      return Alert.alert("Participante já existe", "Este participante ja esta cadastrado.")
+    if (participanteName === "")
+      return null;
+
+    if (participants.includes(participanteName))
+      return Alert.alert("Participante já existe", "Este participante ja esta cadastrado.");
+
+    setParticipantes(state => [...state, participanteName]);
+    setParticipanteName('');
   }
 
   const handleParticipantRemove = (name: string) => {
@@ -23,7 +29,7 @@ export function Home() {
       },
       {
         text: 'Sim',
-        onPress: () => Alert.alert('Participante deletado!')
+        onPress: () => setParticipantes(prevStat => prevStat.filter(participants => participants !== name))
       }
     ]);
 
@@ -43,6 +49,8 @@ export function Home() {
           style={styles.input}
           placeholder='Digite um testo...'
           placeholderTextColor={'#6b6b6b'}
+          onChangeText={setParticipanteName}
+          value={participanteName}
         />
         <TouchableOpacity style={styles.button} onPress={handleParticipantAdd}>
           <Text style={styles.buttonText}>
@@ -52,8 +60,8 @@ export function Home() {
       </View>
 
       < FlatList
-        data={participantes}
-        keyExtractor={item => item}
+        data={participants}
+        keyExtractor={(item: string) => item}
         renderItem={({ item }) => (
           <Participant
             key={item}
@@ -73,7 +81,7 @@ export function Home() {
       {/*Outra forma de lista usado scrollView*/}
       {/* < ScrollView showsVerticalScrollIndicator={false}>
         {
-          participantes.map(participant => (
+          participants.map(participant => (
             <Participant
               key={participant}
               name={participant}
